@@ -1,6 +1,6 @@
 
 /* VarInt module (src/varint.c) */
-/* Pack varints to byte arrays, unpack from socket, read, etc. */
+/* Pack data to byte arrays, unpack from socket, read, etc. */
 
 #include"varint.h"
 #include"structs.h"
@@ -13,6 +13,17 @@
 #include<sys/socket.h>
 #include<sys/types.h>
 
+#define _EX_I_BYTE(val, i) ((val >> i) & 0xFF)
+// Float will be casted to int by default..
+#define _PACK_ARG(arg) _Genecric((arg), int: pack_int_arg,\
+                                        float: pack_int_arg,\
+                                        _string: pack_string_arg\
+                                        default: pack_failed)(arg)
+
+int pack_failed(void* arg) {
+    fprintf(stderr, "This type is not supported for _PACK_ARG macro.");
+    return -1;
+}
 
 _byte_array pack_varint(int data) {
     static _byte_array result;
@@ -44,7 +55,7 @@ int read_varint(int socketfd) {
             fprintf(stderr, "failed to read from socket (read_varint).");
             return -1;
         }
-        bytes[n] = -1;
+        bytes[n] = 0;
         local_byte = bytes[0];
         result |= (local_byte & 0x7F) << 7*i;
         if (!(local_byte & 0x80)) 
@@ -53,6 +64,10 @@ int read_varint(int socketfd) {
     return result;
 }
 
+// Pack arguments of the different types to _byte_array.
+// 
+// {
+// Cast _string type to _byte_array. Length is varint by MC protocol.
 _byte_array pack_string_arg(_string arg) {
     static _byte_array result, result_len;
     result_len = pack_varint(strlen(arg));
@@ -71,6 +86,19 @@ _byte_array pack_string_arg(_string arg) {
     result[bytes_am-1+strlen(arg)] = 0;
     return result;
 }
+
+// Cast int to _byte_array type. Also using 5 bytes instead of 4.
+_byte_array pack_int_arg(int arg) {
+    static _byte_array result;
+    result = (_byte_array)malloc(5);
+    memset(result, 0, sizeof(result));
+
+    for (int i = 0; i < 4; i++)
+        result[i] = _EX_I_BYTE(arg, i);
+    return result;
+}
+// }
+//
 
 int test_read_varint(_byte_array _bytes) {
     int test_result = 0;

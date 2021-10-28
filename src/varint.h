@@ -15,4 +15,5 @@ _byte_array pack_varint(int data);
 int read_varint(int socketfd);
 int test_read_varint(_byte_array _bytes);
 _byte_array pack_string_arg(_string arg);
+_byte_array pack_int_arg(int arg);
 
