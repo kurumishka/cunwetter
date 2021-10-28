@@ -23,13 +23,6 @@ void help_usage() {
 int main(int argc, char** argv) {
     if (argc <= 2)
         help_usage();
-    
-    _byte_array test;
-    test = pack_string_arg("hello world its me..");
-    for (int i = 0; i <= test[0]+2; i++)
-        printf("%d ", test[i]);
-    printf("\n");
-    return 0;
 
     BOOL plogs = FALSE;
     int threads = 1;

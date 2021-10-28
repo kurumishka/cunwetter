@@ -40,7 +40,7 @@ int read_varint(int socketfd) {
 
     for (int i = 0; i < 5; i++) {
         int n = read(socketfd, bytes, 1);
-        if (n < 1) {
+        if (n < 0) {
             fprintf(stderr, "failed to read from socket (read_varint).");
             return -1;
         }
@@ -56,6 +56,7 @@ int read_varint(int socketfd) {
 _byte_array pack_string_arg(_string arg) {
     static _byte_array result, result_len;
     result_len = pack_varint(strlen(arg));
+
     int bytes_am = 0;
     for (int i = 0; i < 10; i++) {
         if (result_len[i] != 0) bytes_am++;
@@ -72,6 +73,15 @@ _byte_array pack_string_arg(_string arg) {
 }
 
 int test_read_varint(_byte_array _bytes) {
-    return 0;
+    int test_result = 0;
+    _byte local_byte;
+
+    for (int i = 0; i < 5; i++) {
+        local_byte = _bytes[i];
+        test_result |= (local_byte & 0x7F) << 7*i;
+        if (!(local_byte & 0x80))
+            break;
+    }
+    return test_result;
 }
 
