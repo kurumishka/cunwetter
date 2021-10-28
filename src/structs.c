@@ -28,7 +28,6 @@ CONFIG* init_config(BOOL p_value, int threads, _string host, _string port) {
     return config;
 }
 
-
 int make_socket(CONFIG* conf) {
     struct sockaddr_in socket_st;
     int _socket = socket(AF_INET, SOCK_STREAM, 0);
@@ -49,5 +48,4 @@ int make_socket(CONFIG* conf) {
 
     return _socket;
 }
-
 

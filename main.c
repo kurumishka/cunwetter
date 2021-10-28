@@ -10,10 +10,6 @@
 #include<sys/socket.h>
 #include<sys/types.h>
 
-/* Main types for communication through mc protocol. */
-typedef unsigned char _byte;
-typedef _byte* _byte_array;
-
 #define READ_SOCKET
 
 
@@ -23,7 +19,6 @@ void help_usage() {
     puts("\t-v, --verbose - more logs.");
     exit(0);
 }
-
 
 int main(int argc, char** argv) {
     if (argc <= 2)
@@ -35,7 +30,6 @@ int main(int argc, char** argv) {
         printf("%d ", test[i]);
     printf("\n");
     return 0;
-
 
     BOOL plogs = FALSE;
     int threads = 1;

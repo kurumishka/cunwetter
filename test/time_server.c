@@ -56,7 +56,6 @@ int make_server_socket(_string port) {
     return _socket;
 }
 
-
 int accept_connections(int _socket) {
     int conn;
     time_t ticks;

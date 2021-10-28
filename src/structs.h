@@ -31,6 +31,5 @@ CONFIG;
 
 /* Initalise config structure and make socket functions prototypes. */
 CONFIG* init_config(BOOL p_value, int threads, _string host, _string port);
-
 int make_socket(CONFIG* config);
 

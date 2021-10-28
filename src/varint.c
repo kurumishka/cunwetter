@@ -2,7 +2,6 @@
 /* VarInt module (src/varint.c) */
 /* Pack varints to byte arrays, unpack from socket, read, etc. */
 
-
 #include"varint.h"
 #include"structs.h"
 
@@ -33,7 +32,6 @@ _byte_array pack_varint(int data) {
     return result;
 }
 
-
 int read_varint(int socketfd) {
     int result = 0;
     /* Average varint is <= 5 bytes, varlong <= 10 bytes. */
@@ -55,7 +53,6 @@ int read_varint(int socketfd) {
     return result;
 }
 
-
 _byte_array pack_string_arg(_string arg) {
     static _byte_array result, result_len;
     result_len = pack_varint(strlen(arg));
@@ -73,7 +70,6 @@ _byte_array pack_string_arg(_string arg) {
     result[bytes_am-1+strlen(arg)] = 0;
     return result;
 }
-
 
 int test_read_varint(_byte_array _bytes) {
     return 0;
